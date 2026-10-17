@@ -1,0 +1,118 @@
+<!-- mobile.html -->
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>CAVE (KV) — Controle Remoto & Microfone</title>
+  <link rel="stylesheet" href="/static/css/style.css" />
+  <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
+</head>
+<body>
+  <!-- Pairing Modal -->
+  <div id="pairingModal" class="modal-backdrop hidden">
+    <div class="card" style="max-width: 380px; width: 100%;">
+      <div class="card-title">Parear Smartphone com o PC</div>
+      <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.8rem;">
+        Digite o PIN de 6 dígitos exibido no painel do CAVE no seu computador Windows.
+      </p>
+      <div class="field-row">
+        <label for="deviceNameInput">Nome do Dispositivo</label>
+        <input id="deviceNameInput" type="text" value="Smartphone Android" />
+      </div>
+      <div class="field-row">
+        <label for="pinInput">PIN de Pareamento</label>
+        <input id="pinInput" type="password" inputmode="numeric" placeholder="Ex: 482910" />
+      </div>
+      <p id="pairingError" style="color: var(--danger); font-size: 0.82rem; margin-bottom: 0.6rem;"></p>
+      <button id="pairSubmitBtn" class="btn btn-primary btn-block">Conectar e Parear</button>
+    </div>
+  </div>
+
+  <header class="app-header">
+    <div class="brand-group">
+      <img src="/static/assets/logo.svg" alt="Logo CAVE" />
+      <div>
+        <div class="brand-title">CAVE // KV</div>
+        <div class="brand-subtitle">Microfone Sem Fio & Controle Remoto</div>
+      </div>
+    </div>
+    <button id="emergencyStopBtn" class="btn btn-danger">PARAR TUDO</button>
+  </header>
+
+  <main class="container">
+    <!-- Connection & Wake-Word Status Bar -->
+    <section class="card">
+      <div class="status-pills">
+        <span id="pcStatusPill" class="pill offline">PC: Desconectado</span>
+        <span id="micStatusPill" class="pill offline">Microfone: Inativo</span>
+        <span id="modeStatusPill" class="pill standby">Modo: STANDBY</span>
+        <span id="wakeStatusPill" class="pill standby">Wake Word: Aguardando "Cave" / "KV"</span>
+      </div>
+    </section>
+
+    <!-- Visual Voice Core -->
+    <section class="card orb-wrapper">
+      <div id="voiceOrb" class="cave-orb">
+        <img src="/static/assets/logo.svg" alt="KV Core" style="width: 82px; height: 82px;" />
+      </div>
+      <p id="liveSpeechText" style="margin-top: 1rem; font-size: 1rem; font-weight: 600; text-align: center;">
+        Diga "Cave" ou "KV" seguido do comando...
+      </p>
+      <p id="sessionTimerText" style="font-size: 0.8rem; color: var(--text-muted); margin-top: 0.25rem;">
+        Escuta contínua mãos-livres ativa
+      </p>
+
+      <div style="display: flex; gap: 0.6rem; margin-top: 1rem; width: 100%; max-width: 400px;">
+        <button id="reconnectMicBtn" class="btn btn-primary" style="flex: 1;">
+          Reconectar Microfone
+        </button>
+        <button id="pttFallbackBtn" class="btn" style="flex: 1;" title="Opcional para solução de problemas">
+          Push-to-Talk (Fallback)
+        </button>
+      </div>
+    </section>
+
+    <!-- Last Command & Held Keys -->
+    <div class="grid-2">
+      <section class="card">
+        <div class="card-title">Último Comando Executado</div>
+        <p style="font-size: 0.85rem; color: var(--text-muted);">Reconhecido:</p>
+        <p id="lastCommandText" style="font-weight: 700; margin-bottom: 0.5rem;">—</p>
+        <p style="font-size: 0.85rem; color: var(--text-muted);">Resultado:</p>
+        <p id="lastResultText" style="color: var(--cyan-primary); font-weight: 600;">—</p>
+      </section>
+
+      <section class="card">
+        <div class="card-title">Teclas Mantidas (Modo Jogo WASD)</div>
+        <div id="heldKeysContainer">
+          <span style="color: var(--text-muted); font-size: 0.85rem;">Nenhuma tecla pressionada</span>
+        </div>
+      </section>
+    </div>
+
+    <!-- Settings & History Panels -->
+    <div class="grid-2">
+      <section class="card">
+        <div class="card-title">Configurações Rápidas</div>
+        <div class="field-row">
+          <label for="sensitivityRange">Sensibilidade da Wake Word ("Cave" / "KV")</label>
+          <input id="sensitivityRange" type="range" min="0.55" max="0.95" step="0.05" value="0.78" />
+        </div>
+        <div class="field-row">
+          <label for="timeoutInput">Janela de Sessão de Comando (segundos)</label>
+          <input id="timeoutInput" type="number" min="3" max="30" value="8" />
+        </div>
+        <button id="saveMobileSettingsBtn" class="btn btn-primary btn-block">Salvar Configurações</button>
+      </section>
+
+      <section class="card">
+        <div class="card-title">Histórico de Comandos</div>
+        <ul id="mobileHistoryList" class="history-list"></ul>
+      </section>
+    </div>
+  </main>
+
+  <script src="/static/js/mobile.js"></script>
+</body>
+</html>

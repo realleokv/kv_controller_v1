@@ -1,0 +1,14 @@
+Flask>=3.0.2,<4.0.0
+Flask-SocketIO>=5.3.6,<6.0.0
+simple-websocket>=1.0.0,<2.0.0
+vosk>=0.3.45
+sounddevice>=0.4.6
+numpy>=1.26.0
+PyAutoGUI>=0.9.54
+pyperclip>=1.8.2
+psutil>=5.9.8
+pyttsx3>=2.90
+cryptography>=42.0.0
+python-dotenv>=1.0.1
+requests>=2.31.0
+pytest>=8.0.0

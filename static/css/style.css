@@ -1,0 +1,256 @@
+/* style.css */
+:root {
+  --bg-dark: #060b16;
+  --bg-panel: #0d1629;
+  --bg-panel-alt: #13203b;
+  --cyan-primary: #00f2fe;
+  --cyan-border: #0284c7;
+  --text-main: #e2e8f0;
+  --text-muted: #94a3b8;
+  --success: #10b981;
+  --warning: #f59e0b;
+  --danger: #ef4444;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: var(--bg-dark);
+  color: var(--text-main);
+  font-family: "Segoe UI", Roboto, system-ui, -apple-system, sans-serif;
+  line-height: 1.5;
+  min-height: 100vh;
+}
+
+.app-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.9rem 1.25rem;
+  background: rgba(13, 22, 41, 0.92);
+  border-bottom: 1px solid rgba(56, 189, 248, 0.25);
+  position: sticky;
+  top: 0;
+  z-index: 20;
+}
+
+.brand-group {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.brand-group img {
+  width: 40px;
+  height: 40px;
+}
+
+.brand-title {
+  font-size: 1.15rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  color: var(--cyan-primary);
+}
+
+.brand-subtitle {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.container {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 1.25rem;
+}
+
+.grid-2 {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(330px, 1fr));
+  gap: 1.1rem;
+}
+
+.card {
+  background: var(--bg-panel);
+  border: 1px solid rgba(56, 189, 248, 0.22);
+  border-radius: 12px;
+  padding: 1.1rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+}
+
+.card-title {
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--cyan-primary);
+  margin-bottom: 0.85rem;
+  border-bottom: 1px solid rgba(148, 163, 184, 0.15);
+  padding-bottom: 0.45rem;
+}
+
+.status-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.3rem 0.75rem;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  background: var(--bg-panel-alt);
+  border: 1px solid rgba(148, 163, 184, 0.25);
+}
+
+.pill.online {
+  border-color: var(--success);
+  color: #34d399;
+}
+
+.pill.standby {
+  border-color: var(--cyan-border);
+  color: #38bdf8;
+}
+
+.pill.active {
+  border-color: var(--warning);
+  color: #fbbf24;
+}
+
+.pill.offline {
+  border-color: var(--danger);
+  color: #f87171;
+}
+
+.orb-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 1.4rem 0.5rem;
+}
+
+.cave-orb {
+  width: 128px;
+  height: 128px;
+  border-radius: 50%;
+  border: 3px solid var(--cyan-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 28px rgba(0, 242, 254, 0.28);
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+}
+
+.cave-orb.listening {
+  border-color: var(--success);
+  box-shadow: 0 0 42px rgba(16, 185, 129, 0.65);
+  transform: scale(1.06);
+}
+
+.cave-orb.game {
+  border-color: var(--warning);
+  box-shadow: 0 0 42px rgba(245, 158, 11, 0.65);
+}
+
+.btn {
+  cursor: pointer;
+  border: 1px solid var(--cyan-border);
+  background: var(--bg-panel-alt);
+  color: var(--text-main);
+  padding: 0.6rem 1rem;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 0.88rem;
+  transition: background 0.15s ease;
+}
+
+.btn:hover {
+  background: #1e335c;
+}
+
+.btn-primary {
+  background: #0284c7;
+  border-color: var(--cyan-primary);
+  color: #fff;
+}
+
+.btn-danger {
+  background: #dc2626;
+  border-color: #f87171;
+  color: #fff;
+  font-weight: 700;
+}
+
+.btn-block {
+  width: 100%;
+  text-align: center;
+}
+
+.key-badge {
+  display: inline-block;
+  padding: 0.35rem 0.7rem;
+  margin: 0.2rem;
+  border-radius: 6px;
+  background: #1e293b;
+  border: 1px solid var(--cyan-primary);
+  color: var(--cyan-primary);
+  font-weight: 700;
+  font-family: monospace;
+}
+
+.field-row {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  margin-bottom: 0.75rem;
+}
+
+.field-row label {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+}
+
+.field-row input,
+.field-row select {
+  background: #091020;
+  border: 1px solid rgba(148, 163, 184, 0.3);
+  color: var(--text-main);
+  padding: 0.5rem 0.65rem;
+  border-radius: 6px;
+}
+
+.history-list {
+  list-style: none;
+  max-height: 250px;
+  overflow-y: auto;
+}
+
+.history-item {
+  padding: 0.5rem 0;
+  border-bottom: 1px solid rgba(148, 163, 184, 0.12);
+  font-size: 0.85rem;
+}
+
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(3, 7, 18, 0.85);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 50;
+  padding: 1rem;
+}
+
+.hidden {
+  display: none !important;
+}

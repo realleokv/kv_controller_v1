@@ -1,0 +1,147 @@
+{
+  "applications": {
+    "chrome": {
+      "display_name": "Google Chrome",
+      "aliases": [
+        "chrome",
+        "google chrome",
+        "navegador",
+        "meu navegador",
+        "browser",
+        "my browser"
+      ],
+      "process_names": ["chrome.exe"],
+      "executable_candidates": [
+        "%ProgramFiles%\\Google\\Chrome\\Application\\chrome.exe",
+        "%ProgramFiles(x86)%\\Google\\Chrome\\Application\\chrome.exe",
+        "%LocalAppData%\\Google\\Chrome\\Application\\chrome.exe"
+      ],
+      "launch_type": "executable"
+    },
+    "vscode": {
+      "display_name": "Visual Studio Code",
+      "aliases": [
+        "visual studio code",
+        "vs code",
+        "vscode",
+        "editor de codigo",
+        "code"
+      ],
+      "process_names": ["Code.exe"],
+      "executable_candidates": [
+        "%LocalAppData%\\Programs\\Microsoft VS Code\\Code.exe",
+        "%ProgramFiles%\\Microsoft VS Code\\Code.exe"
+      ],
+      "launch_type": "executable"
+    },
+    "steam": {
+      "display_name": "Steam",
+      "aliases": ["steam", "plataforma steam"],
+      "process_names": ["steam.exe"],
+      "executable_candidates": [
+        "%ProgramFiles(x86)%\\Steam\\steam.exe",
+        "%ProgramFiles%\\Steam\\steam.exe"
+      ],
+      "launch_type": "executable"
+    },
+    "discord": {
+      "display_name": "Discord",
+      "aliases": ["discord", "chat discord"],
+      "process_names": ["Discord.exe"],
+      "executable_candidates": [
+        "%LocalAppData%\\Discord\\Update.exe --processStart Discord.exe"
+      ],
+      "launch_type": "discord_updater"
+    },
+    "spotify": {
+      "display_name": "Spotify",
+      "aliases": ["spotify", "musica", "player de musica"],
+      "process_names": ["Spotify.exe"],
+      "executable_candidates": [
+        "%AppData%\\Spotify\\Spotify.exe",
+        "%LocalAppData%\\Microsoft\\WindowsApps\\Spotify.exe"
+      ],
+      "launch_type": "executable"
+    },
+    "explorer": {
+      "display_name": "Explorador de Arquivos",
+      "aliases": [
+        "explorador de arquivos",
+        "file explorer",
+        "explorer",
+        "arquivos",
+        "meu computador"
+      ],
+      "process_names": ["explorer.exe"],
+      "executable_candidates": ["%SystemRoot%\\explorer.exe"],
+      "launch_type": "always_new"
+    },
+    "downloads": {
+      "display_name": "Pasta Downloads",
+      "aliases": [
+        "pasta downloads",
+        "downloads",
+        "downloads folder",
+        "the downloads folder",
+        "pasta de downloads"
+      ],
+      "process_names": [],
+      "target_path": "%UserProfile%\\Downloads",
+      "launch_type": "folder"
+    },
+    "settings": {
+      "display_name": "Configurações do Windows",
+      "aliases": [
+        "configuracoes",
+        "configurações",
+        "settings",
+        "windows settings",
+        "painel de configuracoes"
+      ],
+      "process_names": ["SystemSettings.exe"],
+      "uri": "ms-settings:",
+      "launch_type": "uri"
+    },
+    "task_manager": {
+      "display_name": "Gerenciador de Tarefas",
+      "aliases": [
+        "gerenciador de tarefas",
+        "task manager",
+        "processos"
+      ],
+      "process_names": ["Taskmgr.exe"],
+      "executable_candidates": ["%SystemRoot%\\System32\\Taskmgr.exe"],
+      "launch_type": "executable"
+    },
+    "terminal": {
+      "display_name": "Terminal do Windows",
+      "aliases": [
+        "terminal",
+        "the terminal",
+        "windows terminal",
+        "prompt de comando",
+        "powershell"
+      ],
+      "process_names": ["WindowsTerminal.exe", "cmd.exe"],
+      "executable_candidates": [
+        "%LocalAppData%\\Microsoft\\WindowsApps\\wt.exe",
+        "%SystemRoot%\\System32\\cmd.exe"
+      ],
+      "launch_type": "executable"
+    },
+    "notepad": {
+      "display_name": "Bloco de Notas",
+      "aliases": ["bloco de notas", "notepad"],
+      "process_names": ["notepad.exe"],
+      "executable_candidates": ["%SystemRoot%\\System32\\notepad.exe"],
+      "launch_type": "executable"
+    },
+    "calculator": {
+      "display_name": "Calculadora",
+      "aliases": ["calculadora", "calculator", "calc"],
+      "process_names": ["CalculatorApp.exe", "calc.exe"],
+      "executable_candidates": ["%SystemRoot%\\System32\\calc.exe"],
+      "launch_type": "executable"
+    }
+  }
+}

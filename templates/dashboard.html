@@ -1,0 +1,147 @@
+<!-- dashboard.html -->
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CAVE (KV) — Painel Desktop Windows</title>
+  <link rel="stylesheet" href="/static/css/style.css" />
+  <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
+</head>
+<body>
+  <header class="app-header">
+    <div class="brand-group">
+      <img src="/static/assets/logo.svg" alt="Logo CAVE" />
+      <div>
+        <div class="brand-title">CAVE (KV) — DESKTOP COMMAND CENTER</div>
+        <div class="brand-subtitle">Assistente Pessoal de Voz & Automação Windows</div>
+      </div>
+    </div>
+    <div style="display: flex; gap: 0.65rem; align-items: center;">
+      <span id="uptimeBadge" class="pill standby">Uptime: 0s</span>
+      <button id="dashEmergencyBtn" class="btn btn-danger">PARADA DE EMERGÊNCIA</button>
+    </div>
+  </header>
+
+  <main class="container">
+    <!-- Status Summary Row -->
+    <section class="card">
+      <div class="card-title">Status dos Subsistemas</div>
+      <div class="status-pills">
+        <span id="dashModePill" class="pill standby">Modo: STANDBY</span>
+        <span id="dashStagePill" class="pill standby">Estágio: IDLE</span>
+        <span id="dashPcMicPill" class="pill offline">Mic PC: Inativo</span>
+        <span id="dashMobilePill" class="pill offline">Celular: Desconectado</span>
+        <span id="dashMobileMicPill" class="pill offline">Stream Mobile: Inativo</span>
+      </div>
+    </section>
+
+    <div class="grid-2">
+      <!-- Mobile Connection & Pairing Info -->
+      <section class="card">
+        <div class="card-title">Conexão do Smartphone (Mesma Rede Wi-Fi)</div>
+        <p style="font-size: 0.86rem; color: var(--text-muted); margin-bottom: 0.4rem;">
+          Acesse a URL abaixo no navegador do seu celular Android:
+        </p>
+        <p style="font-family: monospace; font-size: 1rem; color: var(--cyan-primary); font-weight: 700; margin-bottom: 0.65rem;">
+          {{ mobile_url }}
+        </p>
+        <p style="font-size: 0.86rem;">
+          PIN de Pareamento Atual: <strong style="color: #fbbf24; font-family: monospace; font-size: 1.05rem;">{{ pairing_pin }}</strong>
+        </p>
+        <div style="margin-top: 0.85rem;">
+          <p style="font-size: 0.82rem; color: var(--text-muted); margin-bottom: 0.35rem;">Dispositivos Pareados:</p>
+          <ul id="pairedDevicesList" class="history-list"></ul>
+        </div>
+      </section>
+
+      <!-- Live Recognition & Active Keys -->
+      <section class="card">
+        <div class="card-title">Monitor de Reconhecimento & Teclas Ativas</div>
+        <p style="font-size: 0.82rem; color: var(--text-muted);">Fala Parcial / Atual:</p>
+        <p id="dashCurrentSpeech" style="font-weight: 600; margin-bottom: 0.55rem;">—</p>
+        <p style="font-size: 0.82rem; color: var(--text-muted);">Último Comando Reconhecido:</p>
+        <p id="dashLastCommand" style="font-weight: 700; margin-bottom: 0.55rem;">—</p>
+        <p style="font-size: 0.82rem; color: var(--text-muted);">Resultado da Ação:</p>
+        <p id="dashLastResult" style="color: var(--cyan-primary); font-weight: 600; margin-bottom: 0.65rem;">—</p>
+        <p style="font-size: 0.82rem; color: var(--text-muted);">Teclas Pressionadas (WASD):</p>
+        <div id="dashHeldKeys">Nenhuma</div>
+      </section>
+    </div>
+
+    <div class="grid-2">
+      <!-- Assistant Configuration -->
+      <section class="card">
+        <div class="card-title">Configurações do Assistente</div>
+        <div class="field-row">
+          <label for="cfgSensitivity">Sensibilidade da Wake Word (0.50 a 0.95)</label>
+          <input id="cfgSensitivity" type="number" step="0.02" min="0.5" max="0.95" value="{{ settings.wake_word_sensitivity }}" />
+        </div>
+        <div class="field-row">
+          <label for="cfgTimeout">Timeout da Sessão de Comando (segundos)</label>
+          <input id="cfgTimeout" type="number" step="1" min="3" max="30" value="{{ settings.command_session_timeout_seconds }}" />
+        </div>
+        <div class="field-row">
+          <label for="cfgMaxHold">Tempo Máximo de Tecla Pressionada no Modo Jogo (s)</label>
+          <input id="cfgMaxHold" type="number" step="1" min="5" max="120" value="{{ settings.max_key_hold_seconds }}" />
+        </div>
+        <div class="field-row">
+          <label for="cfgTtsSilent">Modo Silencioso (Sem Voz TTS)</label>
+          <select id="cfgTtsSilent">
+            <option value="false" {% if not settings.tts_silent_mode %}selected{% endif %}>Não (Voz Ativa)</option>
+            <option value="true" {% if settings.tts_silent_mode %}selected{% endif %}>Sim (Silencioso)</option>
+          </select>
+        </div>
+        <div class="field-row">
+          <label for="cfgAiEnabled">Assistente Conversacional de IA Opcional</label>
+          <select id="cfgAiEnabled">
+            <option value="false" {% if not settings.ai_enabled %}selected{% endif %}>Desativado (100% Offline)</option>
+            <option value="true" {% if settings.ai_enabled %}selected{% endif %}>Ativado</option>
+          </select>
+        </div>
+        <button id="saveDashSettingsBtn" class="btn btn-primary btn-block">Salvar Configurações</button>
+      </section>
+
+      <!-- Custom Application Registration -->
+      <section class="card">
+        <div class="card-title">Registrar Novo Aplicativo Windows</div>
+        <div class="field-row">
+          <label for="newAppId">Identificador (ex: blender)</label>
+          <input id="newAppId" type="text" placeholder="blender" />
+        </div>
+        <div class="field-row">
+          <label for="newAppName">Nome de Exibição</label>
+          <input id="newAppName" type="text" placeholder="Blender 3D" />
+        </div>
+        <div class="field-row">
+          <label for="newAppAliases">Apelidos por Voz (separados por vírgula)</label>
+          <input id="newAppAliases" type="text" placeholder="blender, modelador 3d" />
+        </div>
+        <div class="field-row">
+          <label for="newAppExe">Caminho Completo do Executável (.exe)</label>
+          <input id="newAppExe" type="text" placeholder="C:\Program Files\Blender Foundation\Blender\blender.exe" />
+        </div>
+        <button id="registerAppBtn" class="btn btn-primary btn-block">Adicionar Aplicativo</button>
+      </section>
+    </div>
+
+    <!-- Command History & Error Log -->
+    <div class="grid-2">
+      <section class="card">
+        <div class="card-title" style="display: flex; justify-content: space-between; align-items: center;">
+          <span>Histórico de Comandos</span>
+          <button id="clearHistoryBtn" class="btn" style="padding: 0.2rem 0.6rem; font-size: 0.75rem;">Limpar</button>
+        </div>
+        <ul id="dashHistoryList" class="history-list"></ul>
+      </section>
+
+      <section class="card">
+        <div class="card-title">Erros e Alertas Recentes</div>
+        <ul id="dashErrorsList" class="history-list"></ul>
+      </section>
+    </div>
+  </main>
+
+  <script src="/static/js/dashboard.js"></script>
+</body>
+</html>
